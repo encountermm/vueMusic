@@ -129,7 +129,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         })
       })
     },
-    //----------------axios 结合 node.js 代理后端请求
+    //----------------axios 结合 node.js 代理后端请求 END
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
