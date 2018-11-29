@@ -1,7 +1,21 @@
 <template>
   <div class="song-list">
     <ul>
-      <li @click="selectItem(song,index)" v-for="(song,index) in songs" class="item" :key="song.id">
+      <li
+        @click="selectItem(song,index)"
+        v-for="(song,index) in songs"
+        class="item"
+        :key="song.id"
+      >
+        <div
+          class="rank"
+          v-show="rank"
+        >
+          <span
+            :class="getRankCls(index)"
+            v-text="getRankText(index)"
+          ></span>
+        </div>
         <div class="content">
           <h2 class="name">
             {{song.name}}
@@ -21,31 +35,47 @@ export default {
     songs: {
       type: Array,
       default: () => []
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     getDesc(song) {
-      return `${song.singer}·${song.album}`
+      return `${song.singer}·${song.album}`;
     },
     selectItem(item, index) {
-      this.$emit('select', item, index)
+      this.$emit("select", item, index);
+    },
+    getRankCls(index) {
+      if (index <= 2) {
+        return `icon icon${index}`;
+      } else {
+        return "text";
+      }
+    },
+    getRankText(index) {
+      if (index > 2) {
+        return index + 1;
+      }
     },
     format(interval) {
-      interval = interval | 0
-      const minute = (interval / 60) | 0
-      const second = this._pad(interval % 60)
-      return `${minute}:${second}`
+      interval = interval | 0;
+      const minute = (interval / 60) | 0;
+      const second = this._pad(interval % 60);
+      return `${minute}:${second}`;
     },
     _pad(num, n = 2) {
-      let len = num.toString().length
+      let len = num.toString().length;
       while (len < n) {
-        num = '0' + num
-        len++
+        num = "0" + num;
+        len++;
       }
-      return num
+      return num;
     }
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -63,7 +93,8 @@ export default {
     .rank
       flex 0 0 25px
       width 25px
-      margin-right 30px
+      margin-right 15px
+      margin-left 15px
       text-align center
       .icon
         display inline-block

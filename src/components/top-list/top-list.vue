@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     _getTopListDetail() {
-      console.log(1);
       if (!this.topList.id) {
         this.$router.push("/rank");
         return;

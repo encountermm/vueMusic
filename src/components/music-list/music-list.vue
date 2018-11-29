@@ -45,6 +45,7 @@
         <song-list
           @select="selectItem"
           :songs="songs"
+          :rank="rank"
         ></song-list>
       </div>
       <!--加载loading-->
@@ -83,6 +84,10 @@ export default {
     title: {
       type: String,
       default: ""
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
