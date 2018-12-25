@@ -1,6 +1,9 @@
 import {
   playMode
 } from 'assets/js/config'
+import {
+  loadSearch
+} from "assets/js/cache";
 
 const state = {
   // 歌手信息 Object{ id name avatar }
@@ -20,7 +23,9 @@ const state = {
   // 歌单详情
   disc: {},
   // 排行榜列表 Object
-  topList: {}
+  topList: {},
+  // 搜索历史
+  searchHistory: loadSearch()
 
 }
 

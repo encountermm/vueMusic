@@ -43,7 +43,7 @@ const TopList = (resolve) => {
 export default new Router({
   routes: [{
     path: '/',
-    redirect: '/recommend'
+    redirect: '/search'
   }, {
     path: '/recommend',
     component: Recommend,
@@ -67,6 +67,10 @@ export default new Router({
     }]
   }, {
     path: '/search',
-    component: Search
+    component: Search,
+    children: [{
+      path: ':id',
+      component: SingerDetail
+    }]
   }]
 })
