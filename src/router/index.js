@@ -43,7 +43,7 @@ const TopList = (resolve) => {
 export default new Router({
   routes: [{
     path: '/',
-    redirect: '/search'
+    redirect: '/singer'
   }, {
     path: '/recommend',
     component: Recommend,
