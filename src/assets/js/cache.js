@@ -1,11 +1,11 @@
 import storage from 'good-storage'
-
+// 搜索KEY
 const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LEN = 15
-
+// 播放key
 const PLAY_KEY = '__play__'
 const PLAY_MAX_LEN = 200
-
+// 喜欢key
 const FAVORITE_KEY = '__favorite__'
 const FAVORITE_MAX_LEN = 200
 
@@ -91,4 +91,3 @@ export function deleteFavorite(song) {
 export function loadFavorite() {
   return storage.get(FAVORITE_KEY, [])
 }
-

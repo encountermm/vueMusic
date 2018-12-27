@@ -2,7 +2,8 @@ import {
   playMode
 } from 'assets/js/config'
 import {
-  loadSearch
+  loadSearch,
+  loadPlay
 } from "assets/js/cache";
 
 const state = {
@@ -25,7 +26,9 @@ const state = {
   // 排行榜列表 Object
   topList: {},
   // 搜索历史
-  searchHistory: loadSearch()
+  searchHistory: loadSearch(),
+  // 播放历史
+  playHistory: loadPlay()
 
 }
 

@@ -41,7 +41,7 @@ export const playerMixin = {
     },
     ...mapGetters([
       'sequenceList',
-      'playlist',
+      'playList',
       'currentSong',
       'mode',
       'favoriteList'
@@ -102,7 +102,7 @@ export const searchMixin = {
   data() {
     return {
       query: '',
-      refreshDelay: 120
+      refreshDelay: 100
     }
   },
   computed: {

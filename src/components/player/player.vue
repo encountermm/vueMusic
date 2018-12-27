@@ -223,20 +223,21 @@
 
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import animations from "create-keyframe-animation";
 import { prefixStyle } from "assets/js/dom";
 import ProgressBar from "base/progressBar/progressBar";
 import ProgressCircle from "base/progressCircle/progressCircle";
 import { playMode } from "assets/js/config";
-import { shuffle } from "assets/js/util";
 import Lyric from "lyric-parser";
 import Scroll from "base/scroll/scroll";
 import PlayList from "components/playlist/playlist";
+import { playerMixin } from "assets/js/mixin.js";
 
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
 export default {
+  mixins: [playerMixin],
   data() {
     return {
       songReady: false,
@@ -274,10 +275,12 @@ export default {
     },
     ready() {
       this.songReady = true;
+      this.savePlayHistory(this.currentSong);
     },
     error() {
       this.songReady = true;
-      alert("歌曲加载失败");
+      alert("歌曲加载失败，跳往下一首");
+      this.next();
     },
     updateTime(e) {
       this.currentTime = e.target.currentTime;
@@ -412,25 +415,6 @@ export default {
     open() {
       this.setFullScreen(true);
     },
-    changeMode() {
-      const mode = (this.mode + 1) % 3;
-      this.setPlayMode(mode);
-      // 播放模式列表
-      let list = null;
-      if (mode === playMode.random) {
-        list = shuffle(this.sequenceList);
-      } else {
-        list = this.sequenceList;
-      }
-      this.resetCurrentIndex(list);
-      this.setPlayList(list);
-    },
-    resetCurrentIndex(list) {
-      let index = list.findIndex(item => {
-        return item.id === this.currentSong.id;
-      });
-      this.setCurrentIndex(index);
-    },
     end() {
       if (this.mode === playMode.loop) {
         this.loop();
@@ -546,12 +530,9 @@ export default {
       };
     },
     ...mapMutations({
-      setFullScreen: "SET_FULL_SCREEN",
-      setPlayingState: "SET_PLAYING_STATE",
-      setCurrentIndex: "SET_CURRENT_INDEX",
-      setPlayMode: "SET_PLAY_MODE",
-      setPlayList: "SET_PLAYLIST"
-    })
+      setFullScreen: "SET_FULL_SCREEN"
+    }),
+    ...mapActions(['savePlayHistory'])
   },
   watch: {
     currentSong(newSong, oldSong) {

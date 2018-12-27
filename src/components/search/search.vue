@@ -16,6 +16,7 @@
         ref="shortcut"
         class="shortcut"
         :data="shortcut"
+        :refreshDelay="refreshDelay"
       >
         <div v-show="!query">
           <!-- 热门搜索 -->
@@ -87,7 +88,7 @@ import Confirm from "base/confirm/confirm";
 import Scroll from "base/scroll/scroll";
 import { getHotKey } from "api/search";
 import { ERR_OK } from "api/config";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import { playListMixin, searchMixin } from "assets/js/mixin";
 
 export default {
@@ -97,15 +98,13 @@ export default {
   },
   data() {
     return {
-      hotKey: [],
-      query: ""
+      hotKey: []
     };
   },
   computed: {
     shortcut() {
       return this.hotKey.concat(this.searchHistory);
-    },
-    ...mapGetters(["searchHistory"])
+    }
   },
   methods: {
     handlePlayList(playlist) {
@@ -124,26 +123,10 @@ export default {
         }
       });
     },
-    addQuery(query) {
-      this.$refs.searchBox.setQuery(query);
-    },
-    onQueryChange(query) {
-      this.query = query;
-    },
-    blurInput() {
-      this.$refs.searchBox.blur();
-    },
-    saveSearch() {
-      this.saveSearchHistory(this.query);
-    },
     showConfirm() {
       this.$refs.confirm.show();
     },
-    ...mapActions([
-      "saveSearchHistory",
-      "deleteSearchHistory",
-      "clearSearchHistory"
-    ])
+    ...mapActions(["clearSearchHistory"])
   },
   watch: {
     query(newQuery) {
