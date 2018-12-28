@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getSingerDetail } from "api/singer";
+import { getSingerDetail, getMusicKey } from "api/singer";
 import { ERR_OK } from "api/config";
 import { createSong } from "assets/js/song";
 import MusicList from "components/music-list/music-list";
@@ -51,9 +51,14 @@ export default {
 
       list.forEach(item => {
         let { musicData } = item;
-        if (musicData.songid && musicData.albummid) {
-          ret.push(createSong(musicData));
-        }
+        getMusicKey(musicData.songmid).then(res => {
+          if (res.code === ERR_OK) {
+            let purl = res.req_0.data.midurlinfo[0].purl;
+            if (musicData.songid && musicData.albummid) {
+              ret.push(createSong(musicData, purl));
+            }
+          }
+        });
       });
       return ret;
     }

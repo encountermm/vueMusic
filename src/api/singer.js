@@ -39,41 +39,20 @@ export function getSingerDetail(singerId) {
   return jsonp(url, data, options)
 }
 
-// // 获取vkey
-// export function getMusicKey(songmid) {
-//   const url = '/api/getMusicKey'
-//   const data = Object.assign({}, commonParams, {
-//     g_tk: 1405611313,
-//     loginUin: 1120010842,
-//     hostUin: 0,
-//     format: 'json',
-//     notice: 0,
-//     platform: 'yqq',
-//     needNewCode: 0,
-//     data: {
-//       "req_0": {
-//         "module": "vkey.GetVkeyServer",
-//         "method": "CgiGetVkey",
-//         "param": {
-//           "guid": "2778898976",
-//           "songmid": [songmid],
-//           "songtype": [0],
-//           "uin": "1120010842",
-//           "loginflag": 1,
-//           "platform": "20"
-//         }
-//       },
-//       "comm": {
-//         "uin": 1120010842,
-//         "format": "json",
-//         "ct": 20,
-//         "cv": 0
-//       }
-//     }
-//   })
-//   return axios.get(url, {
-//     params: data
-//   }).then((res) => {
-//     return Promise.resolve(res.data)
-//   })
-// }
+// 获取vkey
+export function getMusicKey(songmid) {
+  const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+  const data = Object.assign({}, {
+    g_tk: 5381,
+    loginUin: 0,
+    hostUin: 0,
+    format: 'json',
+    inCharset: 'utf8',
+    outCharset: 'utf-8',
+    notice: 0,
+    platform: 'yqq.json',
+    needNewCode: 0,
+    data: `{"req":{"module":"CDN.SrfCdnDispatchServer","method":"GetCdnDispatch","param":{"guid":"2778898976","calltype":0,"userip":""}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"2778898976","songmid":["${songmid}"],"songtype":[0],"uin":"0","loginflag":1,"platform":"20"}},"comm":{"uin":0,"format":"json","ct":20,"cv":0}}`
+  })
+  return jsonp(url, data)
+}
