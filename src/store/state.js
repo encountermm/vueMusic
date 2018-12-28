@@ -3,7 +3,8 @@ import {
 } from 'assets/js/config'
 import {
   loadSearch,
-  loadPlay
+  loadPlay,
+  loadFavorite
 } from "assets/js/cache";
 
 const state = {
@@ -28,7 +29,9 @@ const state = {
   // 搜索历史
   searchHistory: loadSearch(),
   // 播放历史
-  playHistory: loadPlay()
+  playHistory: loadPlay(),
+  // 我的喜欢
+  favoriteList: loadFavorite()
 
 }
 

@@ -155,7 +155,11 @@
               ></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i
+                class="icon"
+                :class="getFavoriteIcon(currentSong)"
+                @click="toggleFavorite(currentSong)"
+              ></i>
             </div>
           </div>
         </div>
@@ -213,7 +217,7 @@
     <audio
       :src="currentSong.url"
       ref="audio"
-      @canplay="ready"
+      @play="ready"
       @error="error"
       @timeupdate="updateTime"
       @ended="end"
@@ -296,6 +300,9 @@ export default {
       this.currentSong
         .getLyric()
         .then(lyric => {
+          if (this.currentSong.lyric !== lyric) {
+            return;
+          }
           this.currentLyric = new Lyric(lyric, this.handleLyric);
           if (this.playing) {
             this.currentLyric.play();
@@ -442,6 +449,7 @@ export default {
       if (!this.songReady) return;
       if (this.playList.length === 1) {
         this.loop();
+        return false;
       } else {
         let index = this.currentIndex - 1;
         if (index === -1) {
@@ -532,7 +540,7 @@ export default {
     ...mapMutations({
       setFullScreen: "SET_FULL_SCREEN"
     }),
-    ...mapActions(['savePlayHistory'])
+    ...mapActions(["savePlayHistory"])
   },
   watch: {
     currentSong(newSong, oldSong) {
@@ -542,8 +550,12 @@ export default {
       if (newSong.id === oldSong.id) return;
       if (this.currentLyric) {
         this.currentLyric.stop();
+        this.currentTime = 0;
+        this.playingLyric = "";
+        this.currentLineNum = 0;
       }
-      setTimeout(() => {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
         this.$refs.audio.play();
         this.getLyric();
       }, 1000);
