@@ -16,5 +16,6 @@ npm run dev
 
 # build for production with minification
 npm run build
+
 打包后，node prod.server.js启动服务
 ```
