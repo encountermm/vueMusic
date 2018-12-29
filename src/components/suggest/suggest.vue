@@ -40,6 +40,7 @@
 <script>
 import { search } from "api/search";
 import { ERR_OK } from "api/config";
+import { getMusicKey } from "api/singer";
 import { createSong } from "assets/js/song";
 import Scroll from "base/scroll/scroll";
 import Loading from "base/loading/loading";
@@ -123,7 +124,6 @@ export default {
     },
     selectItem(item) {
       if (item.type && item.type === TYPE_SINGER) {
-        console.log(item);
         const singer = new Singer({
           id: item.singermid,
           name: item.singername
@@ -133,7 +133,13 @@ export default {
         });
         this.setSinger(singer);
       } else {
-        this.insertSong(item);
+        getMusicKey(item.mid).then(res => {
+          if (res.code === ERR_OK) {
+            let purl = res.req_0.data.midurlinfo[0].purl;
+            item.url = `http://isure.stream.qqmusic.qq.com/${purl}`;
+            this.insertSong(item);
+          }
+        });
       }
       this.$emit("select");
     },
